@@ -1,0 +1,59 @@
+import pygame
+WIDTH=800
+LENGTH=800
+NAME="ship driveing"
+screen=pygame.display.set_mode((WIDTH,LENGTH))
+pygame.display.set_caption(NAME)
+RUN=True
+ship=pygame.image.load("images\ship2.png")
+ship=pygame.transform.rotate(ship,90)
+bg=pygame.image.load("images\gb.png")
+bg=pygame.transform.scale(bg,(800,800))
+class Sprite1(pygame.sprite.Sprite):
+    def __init__(self,x,y,image):
+        super().__init__()#initialization giving the values for sprite class
+        self.image=image
+        self.rect=self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+    def update(self):
+        if self.rect.y < 0 :    #for hold
+            self.rect.y=0
+        if self.rect.y > 750 :
+            self.rect.y=750
+        if self.rect.x > 750 :
+            self.rect.x=750
+        if self.rect.x < 0 :
+            self.rect.x=0
+        keyspresed=pygame.key.get_pressed()
+        if keyspresed[pygame.K_w] :
+            self.rect.y=self.rect.y-10
+        if keyspresed[pygame.K_d] :
+            self.rect.x=self.rect.x-10
+        if keyspresed[pygame.K_a] :
+            self.rect.x=self.rect.x+10
+        if keyspresed[pygame.K_s] :
+            self.rect.y=self.rect.y+10
+
+
+#creating object of the sprite class
+sprite=Sprite1(400,400,ship)
+
+# groop of sprites
+
+sprites=pygame.sprite.Group()
+sprites.add(sprite)
+while RUN==True :
+    screen.blit(bg,(0,0))
+    sprites.draw(screen)
+    for event in pygame.event.get():
+        if event.type==pygame.QUIT:
+            RUN=False
+    sprite.update()
+    
+
+
+
+
+
+    pygame.display.update()
